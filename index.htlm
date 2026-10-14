@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joy Hazari | Jarvis AI Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #030712;
+            --text-color: #93c5fd;
+            --accent-color: #00f2ff;
+            --secondary-accent: #7928ca;
+            --glow-color: rgba(0, 242, 255, 0.6);
+            --glass-bg: rgba(10, 15, 30, 0.75);
+            --glass-border: rgba(0, 242, 255, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+
+        /* Initial Bright Screen Flash Effect on Load */
+        @keyframes screenFlash {
+            0% { background-color: rgba(0, 242, 255, 0.8); }
+            100% { background-color: var(--bg-color); }
+        }
+
+        .page-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #00f2ff;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            animation: flashIntro 0.8s ease-out forwards;
+        }
+
+        @keyframes flashIntro {
+            0% { opacity: 0.9; }
+            100% { opacity: 0; }
+        }
+
+        /* High-speed Ultraviolet / Laser Slash Intro (Plays Once) */
+        .intro-slash {
+            position: fixed;
+            top: 0;
+            left: -150%;
+            width: 150%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff00ff, #00f2ff, #ffffff);
+            box-shadow: 0 0 30px #00f2ff, 0 0 60px #ff00ff;
+            z-index: 999;
+            pointer-events: none;
+            animation: slashMove 1.2s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+        }
+
+        @keyframes slashMove {
+            0% { transform: translateX(0) rotate(25deg); opacity: 1; }
+            100% { transform: translateX(250vw) rotate(25deg); opacity: 0; }
+        }
+
+        /* Canvas for Interactive Space & Particles Background */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at center, #0a1128 0%, #030712 100%);
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--accent-color), #ffffff, var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(0,242,255,0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 0.5rem 2rem;
+            margin: 0 auto;
+            max-width: 600px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 20px rgba(0,242,255,0.2);
+        }
+
+        nav a {
+            color: #e2e8f0;
+            margin: 0 1.2rem;
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        /* Main Sections container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 9rem 2rem 5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        /* Glassmorphism Cards with Advanced Glow & Hover Effects */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,242,255,0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,242,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 35px var(--glow-color), inset 0 0 25px rgba(0,242,255,0.2);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Active / Click Glow Highlight */
+        .glass-card:active, .glass-card.highlighted {
+            border-color: #ffffff;
+            box-shadow: 0 0 50px #ffffff, inset 0 0 30px var(--accent-color);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        h2::before {
+            content: '>';
+            color: var(--accent-color);
+            margin-right: 0.8rem;
+            font-size: 2rem;
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        p, li {
+            line-height: 1.8;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 1rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '❖';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        /* Location & Social Badges */
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .badge-item {
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .badge-item:hover {
+            background: rgba(0, 242, 255, 0.15);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        .badge-item a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .badge-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            background: #010409;
+            text-align: center;
+            padding: 2.5rem;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: #64748b;
+            border-top: 1px solid var(--glass-border);
+            box-shadow: inset 0 10px 20px rgba(0,0,0,0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bright Screen Flash & Ultraviolet Laser Slash on Load (Plays Once) -->
+    <div class="page-flash"></div>
+    <div class="intro-slash"></div>
+
+    <!-- Space & Tech Canvas Background -->
+    <canvas id="jarvisCanvas"></canvas>
+
+    <!-- Header & Navigation -->
+    <header>
+        <h1>Joy Hazari</h1>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- About Section -->
+        <section id="about" class="glass-card" onclick="this.classList.toggle('highlighted')">
+            <h2>About Me</h2>
+            <p>I specialize in building high-performance, secure web applications and custom automation tools. With expertise in Python, Web Automation, Web Scraping, and Cyber Security, I help businesses streamline their workflow and protect their web infrastructure.</p>
+            <p style="margin-top: 1rem; color: var(--accent-color); font-weight: 500;">📍 Location: Kolkata, West Bengal, India</p>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="glass-card" onclick="this.classList.toggle('highlighted')">
+            <h2>Skills & Expertise</h2>
+            <ul>
+                <li>Custom Web Development (Python, JS, HTML/CSS)</li>
+                <li>Web Scraping & Data Extraction Automation (Selenium, BeautifulSoup, Python)</li>
+                <li>Web Security & Vulnerability Assessment (Cyber Security Enthusiast)</li>
+                <li>Interactive & High-Performance UI/UX Design</li>
+            </ul>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="glass-card" onclick="this.classList.toggle('highlighted')">
+            <h2>Featured Projects</h2>
+            <div style="margin-top: 1rem;">
+                <h3 style="color: #ffffff; font-size: 1.4rem; margin-bottom: 0.5rem;">Gazole Civil Service Academy</h3>
+                <p>Official website developed featuring custom UI/UX design, responsive layout, fast load performance, and secure web components.</p>
+                <div style="margin-top: 1rem;">
+                    <a href="https://www.gazolecivilserviceacademy.in/" target="_blank" style="color: var(--accent-color); text-decoration: none; font-weight: bold; border-bottom: 1px dashed var(--accent-color);">Visit Live Project ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Profiles Section -->
+        <section id="contact" class="glass-card" onclick="this.classList.toggle('highlighted')">
+            <h2>Connect & Profiles</h2>
+            <p>Get in touch or explore my professional networks below:</p>
+            <div class="badge-grid">
+                <div class="badge-item">
+                    <strong>LinkedIn Profile</strong><br>
+                    <a href="https://www.linkedin.com/in/joy-hajari" target="_blank">View LinkedIn Profile</a>
+                </div>
+                <div class="badge-item">
+                    <strong>GitHub Repository</strong><br>
+                    <a href="https://github.com/joy-hajari" target="_blank">Explore GitHub Code</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 Joy Hazari | JARVIS AI CORE: ONLINE & SECURE</p>
+    </div>
+
+    <!-- JavaScript for Advanced Jarvis Space Background & Interactive Glow -->
+    <script>
+        const canvas = document.getElementById('jarvisCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height, stars;
+
+        class Star {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2.2;
+                this.baseAlpha = Math.random() * 0.8 + 0.2;
+                this.alpha = this.baseAlpha;
+                this.twinkleSpeed = Math.random() * 0.03 + 0.01;
+            }
+
+            update() {
+                this.alpha += Math.sin(Date.now() * this.twinkleSpeed) * 0.01;
+                if (this.alpha < 0.1) this.alpha = 0.1;
+                if (this.alpha > 1) this.alpha = 1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 242, 255, ${this.alpha})`;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#00f2ff';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < 150; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            ctx.strokeStyle = 'rgba(0, 242, 255, 0.03)';
+            ctx.lineWidth = 1;
+            const gridSize = 50;
+            for (let x = 0; x < width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
